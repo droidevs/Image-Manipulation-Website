@@ -9,4 +9,4 @@ Route::get('/', function () {
 
 
 
-Route::apiResource('album', AlbumController::class);
+
