@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ResizeImageRequest;
+use App\Http\Resources\V1\ImageManipulationResource;
 use App\Models\Album;
 use App\Models\ImageManipulation;
 use App\Http\Requests\StoreImageManipulationRequest;
@@ -76,7 +77,17 @@ class ImageManipulationController extends Controller
         $w = $all['w'];
         $h = $all['h'];
 
-        $this->getImageWithAndHeight($w,$h, $originalPath);
+        list($width, $height, $image) = $this->getImageWithAndHeight($w,$h, $originalPath);
+
+        $resizedFilename = $filename.'-resized.'.$extension;
+
+        $image->resize($width, $height)->save($absolutePath.$resizedFilename);
+
+        $data['out_path'] = $dir.$resizedFilename;
+
+        $imageManipulation = ImageManipulation::create($data);
+
+        return new ImageManipulationResource($imageManipulation);
     }
 
     /**
@@ -112,6 +123,6 @@ class ImageManipulationController extends Controller
             $newHeight = $h? (float) $h : $originalHeight * $newWidth/$originalWidth;
         }
 
-        return [$newWidth, $newHeight];
+        return [$newWidth, $newHeight, $image];
     }
 }
