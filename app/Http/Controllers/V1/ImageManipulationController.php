@@ -10,6 +10,7 @@ use App\Http\Requests\StoreImageManipulationRequest;
 use App\Http\Requests\UpdateImageManipulationRequest;
 use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 use Str;
 
 class ImageManipulationController extends Controller
@@ -87,14 +88,6 @@ class ImageManipulationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateImageManipulationRequest $request, ImageManipulation $imageManipulation)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(ImageManipulation $imageManipulation)
@@ -102,8 +95,23 @@ class ImageManipulationController extends Controller
         //
     }
 
-    protected function getImageAndHeight($w, $h, string $originalPath)
+    protected function getImageWithAndHeight($w, $h, string $originalPath)
     {
-        
+        $image = Image::make($originalPath);
+        $originalWidth = $image->width();
+        $originalHeight = $image->height();
+
+        if(str_ends_with($w,'%')) {
+            $ratioW = (float) str_replace('%','',$w);
+            $ratioH = $h ? (float) str_replace('%','',$h) : $ratioW;
+
+            $newWidth = $originalWidth * $ratioW / 100;
+            $newHeight = $originalHeight * $ratioH / 100;
+        } else {
+            $newWidth = (float) $w;
+            $newHeight = $h? (float) $h : $originalHeight * $newWidth/$originalWidth;
+        }
+
+        return [$newWidth, $newHeight];
     }
 }
