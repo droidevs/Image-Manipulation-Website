@@ -28,7 +28,7 @@ class ImageManipulationController extends Controller
     {
         $where = [
             'album_id' => $album->id,
-        ]
+        ];
         return ImageManipulationResource::collection(ImageManipulation::where($where)->paginate());
     }
 
