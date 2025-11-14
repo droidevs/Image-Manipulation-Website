@@ -42,7 +42,7 @@ class AlbumController extends Controller
     {
         $album->update($request->all());
 
-        return $album;
+        return new AlbumResource($album);
     }
 
     /**
