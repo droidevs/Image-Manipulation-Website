@@ -70,7 +70,7 @@ class ImageManipulationController extends Controller
             $filename = pathinfo($data['name'], PATHINFO_FILENAME);
             $ext = $image->getClientOriginalExtension();
             $originalPath = $absolutePath.$data['name'];
-
+            
             $image->move($absolutePath, $data['name']);
 
         } else {
