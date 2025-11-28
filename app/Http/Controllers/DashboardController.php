@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $user = $request->user();
 
         return view('dashboard', [
-            'token' => $user->tokens
+            'tokens' => $user->tokens
         ]);
     }
 

@@ -49,7 +49,7 @@
                                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                         <form method="POST" action="{{ route('token.delete', ['token' => $token->id]) }}">
                                                             @csrf
-                                                            <x-button>Delete</x-button>
+                                                            <x-button-link>Delete</x-button-link>
                                                         </form>
                                                     </td>
                                                 </tr>
