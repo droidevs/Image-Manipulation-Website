@@ -31,7 +31,7 @@ class DashboardController extends Controller
         ]);
         $tokenName = $request->post('name');
 
-        $user = $request->post('name');
+        $user = $request->user();
         $token = $user->createToken($tokenName);
 
         return view('token-show', [

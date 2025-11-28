@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateImageManipulationRequest;
 use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Request;
 use Str;
 
 class ImageManipulationController extends Controller
@@ -19,12 +20,12 @@ class ImageManipulationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return ImageManipulationResource::collection(ImageManipulation::paginate());
     }
 
-    public function byAlbum(Album $album)
+    public function byAlbum(Request $request, Album $album)
     {
         $where = [
             'album_id' => $album->id,
@@ -96,7 +97,7 @@ class ImageManipulationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ImageManipulation $image)
+    public function show(Request $request, ImageManipulation $image)
     {
         return new ImageManipulationResource($image);
     }
@@ -104,7 +105,7 @@ class ImageManipulationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ImageManipulation $image)
+    public function destroy(Request $request, ImageManipulation $image)
     {
         $image->delete();
         return response('',204);
