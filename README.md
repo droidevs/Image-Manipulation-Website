@@ -1,100 +1,100 @@
-# Laravel Image Manipulation REST API
+# My Laravel Image Manipulation API: A Learning Journey
 
-*A beginner-friendly project walkthrough*
+This project is a REST API built with Laravel that I created to teach myself the fundamentals of the framework, RESTful principles, and back-end development. The primary goal was to build a practical application that handles user authentication, data management, and image processing.
 
-## 🎯 Project Overview
+## 🚀 Project Overview
 
-This project is a REST API built using Laravel that demonstrates how to handle image upload and manipulation (resizing, cropping, etc.) in a web API context. You’ll use this project to learn not only Laravel basics, but also REST architecture, token-based authentication, and image processing.
+This API allows authenticated users to manage photo albums and upload images to be resized. It's built with a versioned API (`v1`) and uses Laravel Sanctum for secure, token-based authentication.
 
-## ✅ What You’ll Learn
+### Core Features:
 
-* How to set up a Laravel API project from scratch
-* How to implement authentication (e.g., using Laravel Sanctum)
-* How to upload files/images and process them (resize, crop)
-* How to build RESTful endpoints (upload image, list images, delete image)
-* How to test API endpoints using Postman or other tools
-* How to deploy a Laravel app for production
+*   **User Authentication:** Secure user registration and login using Laravel Sanctum.
+*   **Album Management:** Authenticated users can create, view, update, and delete their own photo albums.
+*   **Image Resizing:** Users can upload an image (or provide a URL) and specify a target width and/or height to resize it. The API supports both pixel and percentage-based dimensions.
+*   **Image Organization:** Resized images can be associated with a specific album.
+*   **Secure & Private:** All endpoints are protected, and users can only access and manage their own albums and images.
+
+## 📡 API Endpoints
+
+All endpoints are prefixed with `/api/v1` and require a valid Sanctum authentication token.
+
+### Album Management
+
+| Method | Endpoint              | Description                      |
+| :----- | :-------------------- | :------------------------------- |
+| `GET`  | `/album`              | Get all albums for the user      |
+| `POST` | `/album`              | Create a new album               |
+| `GET`  | `/album/{album}`      | Get a specific album             |
+| `PUT`  | `/album/{album}`      | Update a specific album          |
+| `DELETE`| `/album/{album}`      | Delete a specific album          |
+
+### Image Manipulation
+
+| Method | Endpoint                   | Description                                         |
+| :----- | :------------------------- | :-------------------------------------------------- |
+| `GET`  | `/image`                   | Get all images for the user                         |
+| `GET`  | `/image/by-album/{album}`  | Get all images within a specific album              |
+| `POST` | `/image/resize`            | Upload and resize an image                          |
+| `GET`  | `/image/{image}`           | Get details of a specific resized image             |
+| `DELETE`| `/image/{image}`           | Delete a specific image                             |
+
 
 ## 🛠 Technologies Used
 
-* Laravel Framework (PHP)
-* Composer for dependency management
-* Intervention/Image (or GD library) for image manipulation
-* Sanctum (or similar) for token-based API authentication
-* MySQL (or SQLite) for database
-* Postman collection provided for testing
+*   **Laravel 10:** The core PHP framework.
+*   **Laravel Sanctum:** For API token authentication.
+*   **Intervention/Image:** For handling image processing and resizing.
+*   **MySQL/SQLite:** As the database.
+*   **PHP 8.2**
 
-## 🔧 Installation Steps (for beginners)
+## 🔧 Installation Steps
 
-1. Clone the repository:
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/droidevs/Image-Manipulation-Website.git
+    ```
+2.  Navigate into the project folder:
+    ```bash
+    cd PHP-Rest-API
+    ```
+3.  Install dependencies with Composer:
+    ```bash
+    composer install
+    ```
+4.  Copy the example environment file and set up your configuration:
+    ```bash
+    cp .env.example .env
+    ```
+    Then update `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` in the `.env` file.
 
-   ```bash
-   git clone https://github.com/thecodeholic/laravel-image-manipulation-rest-api.git
-   ```
-2. Navigate into the project folder:
+5.  Generate the application key:
+    ```bash
+    php artisan key:generate
+    ```
+6.  Run database migrations:
+    ```bash
+    php artisan migrate
+    ```
+7.  Start the development server:
+    ```bash
+    php artisan serve
+    ```
 
-   ```bash
-   cd laravel-image-manipulation-rest-api
-   ```
-3. Install dependencies with Composer:
+## 🧠 Key Things I Learned
 
-   ```bash
-   composer install
-   ```
-4. Copy the example environment file and set up configuration:
+This project was a fantastic hands-on experience. Here are some of the key concepts I learned:
 
-   ```bash
-   cp .env.example .env
-   ```
+*   **API Versioning:** I learned how to structure my API routes with a `v1` prefix, which is a best practice for maintaining APIs over time.
+*   **Resourceful Controllers:** Using `Route::apiResource` for the `AlbumController` streamlined the creation of CRUD endpoints and taught me how to follow RESTful conventions.
+*   **Form Request Validation:** I created custom request classes (`StoreAlbumRequest`, `ResizeImageRequest`, etc.) to handle validation, which kept my controller methods clean and organized.
+*   **API Resources:** I used `AlbumResource` and `ImageManipulationResource` to control the JSON data sent back to the client, which taught me how to format API responses properly.
+*   **File System & Image Processing:** I learned how to handle file uploads, create directories dynamically, and use a third-party library (`Intervention/Image`) to perform complex tasks like resizing.
+*   **Authorization:** I implemented checks in every controller method to ensure that users could only access and modify their own data, which was a great lesson in API security.
+*   **Database Relationships:** I set up relationships between the `User`, `Album`, and `ImageManipulation` models.
 
-   Then update `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`.
-   You can also use SQLite by setting `DB_CONNECTION=sqlite` and creating `database/database.sqlite`.
-5. Generate the application key:
+## 🚀 Future Improvements
 
-   ```bash
-   php artisan key:generate
-   ```
-6. Run database migrations:
-
-   ```bash
-   php artisan migrate
-   ```
-7. Start the development server:
-
-   ```bash
-   php artisan serve
-   ```
-
-   Your API will be available at `http://127.0.0.1:8000`.
-
-## 📡 API Endpoints & Usage
-
-* **POST** `/api/register` – register a new user (returns access token)
-* **POST** `/api/login` – login and obtain token
-* **POST** `/api/images/upload` – upload an image (authenticated)
-* **GET** `/api/images` – list uploaded images (authenticated)
-* **DELETE** `/api/images/{id}` – delete an image (authenticated)
-
-A `postman_collection.json` file is included in the repository so you can import it and test the endpoints yourself.
-
-## 📌 My Learning Experience
-
-As a beginner:
-
-* I found it helpful to follow the setup steps and slowly understand the folder structure (`app`, `routes/api.php`, `controllers`, `middleware`).
-* Uploading an image made me explore how files are stored in Laravel (`storage/app/public`, symbolic link `php artisan storage:link`).
-* Writing code to **resize or crop** images helped me understand external libraries like Intervention/Image.
-* Working with the API authentication helped me grasp how token-based security works (rather than traditional session/cookie auth).
-* Testing with Postman made all the pieces click: request → response, headers → JSON.
-
-## 🧩 Next Steps for Me
-
-* Add more image manipulation features (watermarking, format conversion, thumbnails)
-* Add robust error handling and validation (image size, file types)
-* Rate-limit the API endpoints for security
-* Build a simple frontend (Vue.js or React) that connects to this API
-* Deploy the project to production (Heroku or a VPS) and set up proper file storage (S3)
-
-## 📝 Conclusion
-
-This project was a fantastic learning journey. It allowed me to build a real REST API with Laravel, understand file uploads, image processing, and API authentication in a hands-on way. If you’re a beginner too, I highly recommend stepping through each piece—you’ll come away much more comfortable with building APIs and Laravel fundamentals.
+*   Add more image manipulation features (e.g., cropping, watermarking, filters).
+*   Implement robust error handling and more detailed validation (e.g., max file size, allowed MIME types).
+*   Add API rate limiting to prevent abuse.
+*   Build a simple front-end (using Vue.js or React) to consume this API.
